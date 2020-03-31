@@ -2,7 +2,7 @@
 
 # Shell script for building a Singularity image from Docker Hub and running it.
 # Run with "sh ./singularity.sh rstudio 8787".
-# Then locally something like "ssh -N -L 8787:localhost:8787 skgtetu@login13.myriad.rc.ucl.ac.uk".
+# Then locally something like "ssh -N -L 8787:localhost:8787 user@ip-address".
 # The ports can be set to whatever you choose.
 # For more details: https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/
 # Be sure to check images and paths.
