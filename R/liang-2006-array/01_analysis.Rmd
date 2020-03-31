@@ -1,0 +1,131 @@
+---
+title:
+  '01 Analysis - `r unlist(strsplit(getwd(), "/"))[length(unlist(strsplit(getwd(), "/"))) - 2]`'
+author:
+  - name: "Your Name [email@email.com]"
+  - name: "Your Institution"
+date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+bibliography:
+  '../../`r unlist(strsplit(getwd(), "/"))[length(unlist(strsplit(getwd(), "/"))) - 2]`.bib'
+link-citations: true
+output:
+  html_document:
+    code_folding: hide
+    number_sections: true
+    theme: lumen
+    highlight: haddock
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(
+    inputFile,
+    encoding = encoding,
+    output_file = file.path(
+      "..", "..", "results",
+      unlist(strsplit(getwd(), "/"))[length(unlist(strsplit(getwd(), "/")))], "01_analysis.html"
+    )
+  )})
+---
+
+<style type="text/css">
+body {font-size: 16px;}
+h1.title {font-size: 35px;}
+h1 {font-size: 24px;}
+h2 {font-size: 22px;}
+h3 {font-size: 20px;}
+.toc-content {padding-left: 0px; padding-right: 0px;}
+div.tocify {width: 100%;}
+.tocify-subheader .tocify-item {font-size: 0.95em; padding-left: 25px; text-indent: 0;}
+.tocify-subheader .tocify-subheader .tocify-item {
+  font-size: 0.95em; padding-left: 35px; text-indent: 0;
+}
+div.main-container {max-width: none; width: 100%;}
+</style>
+
+*This file is a part of [R-template](https://github.com/eturkes/quick-omics).*
+
+The data here is derived from @`r unlist(strsplit(getwd(), "/"))[length(unlist(strsplit(getwd(), "/")))]` and will be referenced using the name ``r unlist(strsplit(getwd(), "/"))[length(unlist(strsplit(getwd(), "/")))]``.
+
+```{r}
+# This section should be checked per document.
+# --------------------------------------------
+analysis_no <- 1
+options(stringsAsFactors = FALSE)
+
+packages <- c("conflicted", "DT")
+invisible(suppressPackageStartupMessages(lapply(packages, library, character.only = TRUE)))
+source(file.path(getwd(), "..", "utils.R"))
+# --------------------------------------------
+
+# Everything else in this chunk remains generally unchanged.
+# ----------------------------------------------------------
+data_name <- unlist(strsplit(getwd(), "/"))[length(unlist(strsplit(getwd(), "/")))] # Name of data.
+assets_dir <- normalizePath(file.path(getwd(), "..", "..", "assets", data_name)) # Caches and data.
+tmp_dir <- normalizePath(file.path(getwd(), "..", "..", "tmp", data_name)) # Non-backed up data.
+results_dir <- normalizePath(file.path(getwd(), "..", "..", "results", data_name)) # Rmd output.
+
+# Create directories that don't exist.
+# Note that the document will not Knit to this point if `results_dir` is not created.
+# However, "run all" within RStudio will still work.
+# -----------------------------------------------------------------------------------
+if (!dir.exists(assets_dir)) {
+  dir.create(assets_dir, recursive = TRUE)
+}
+if (!dir.exists(tmp_dir)) {
+  dir.create(tmp_dir, recursive = TRUE)
+}
+if (!dir.exists(results_dir)) {
+  dir.create(results_dir, recursive = TRUE)
+}
+# -----------------------------------------------------------------------------------
+
+# Unique cache directory for each analysis number.
+# ------------------------------------------------
+if (!dir.exists(normalizePath(file.path(assets_dir, "cache", paste0("0", analysis_no))))) {
+  dir.create(
+    normalizePath(file.path(assets_dir, "cache", paste0("0", analysis_no))), recursive = TRUE
+  )
+}
+# ------------------------------------------------
+
+knitr::opts_chunk$set(fig.width = 10, fig.height = 7)
+# ----------------------------------------------------------
+```
+
+# Differentially Expressed Genes (DEGs)
+
+For the sake of simplicity, we do not perform a true DEG analysis here, we simply read in the results from GEO2R and filter by p-value and the direction of change.
+
+```{r}
+data <- read.delim(file.path(assets_dir, "GEO2R.txt"))
+data <- data[which(data$adj.P.Val < 0.05), ]
+```
+
+## AD Upregulated
+
+```{r}
+AD_up <- data[which(data$logFC > 0), ]
+AD_up <- AD_up[order(-AD_up$logFC), ]
+rownames(AD_up) <- NULL
+datatable_custom(AD_up)
+```
+
+## AD Downregulated
+
+```{r}
+AD_down <- data[which(data$logFC < 0), ]
+AD_down <- AD_down[order(AD_down$logFC), ]
+rownames(AD_down) <- NULL
+datatable_custom(AD_down)
+```
+
+# References
+
+This is the concluding section of the document. Here we output the `sessionInfo` and create a bibliography for works cited.
+
+```{r}
+sessionInfo()
+```

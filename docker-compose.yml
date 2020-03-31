@@ -1,0 +1,22 @@
+# Use "docker-compose up all" to run all code non-interactively.
+# Use "docker-compose up rstudio" to access RStudio.
+# Script should be edited for correct image and path.
+# ${PORT} is set by an environmental variable called .env in the top-level directory.
+
+version: "3"
+
+services:
+  all:
+    image: eturkes/r-template:R3.6.2v1
+    volumes:
+      - ".:/home/rstudio/r-template:rw"
+    command: Rscript -e "source('/home/rstudio/r-template/R/run_all.R')"
+
+  rstudio:
+    image: eturkes/r-template:R3.6.2v1
+    volumes:
+      - ".:/home/rstudio/R-template:rw"
+    ports:
+      - "127.0.0.1:${PORT}:8787"
+    environment:
+      -  DISABLE_AUTH=true
