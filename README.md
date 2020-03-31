@@ -42,7 +42,6 @@ If one wishes to use RStudio, first create a `.env` file with the port you would
 
 ```
 PORT=8787
-
 ```
 
 Then open RStudio with:
