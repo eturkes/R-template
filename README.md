@@ -1,6 +1,8 @@
 # R-template
 #### *This project is considered complete and should not see major updates*
 
+**NOTE**: I have only run this on Linux so far, have not confirmed it on Windows or macOS yet.
+
 This repository contains a template useful for starting new R analyses.
 As a demonstration, a very simple analysis of microarray data is included.
 To load neccessary packages, renv and Docker environments are provided as well as a Singularity wrapper.
