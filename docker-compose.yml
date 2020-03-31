@@ -9,8 +9,8 @@ services:
   all:
     image: eturkes/r-template:R3.6.2v1
     volumes:
-      - ".:/home/rstudio/r-template:rw"
-    command: Rscript -e "source('/home/rstudio/r-template/R/run_all.R')"
+      - ".:/home/rstudio/R-template:rw"
+    command: Rscript -e "source('/home/rstudio/R-template/R/run_all.R')"
 
   rstudio:
     image: eturkes/r-template:R3.6.2v1
