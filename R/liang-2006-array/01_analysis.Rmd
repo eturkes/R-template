@@ -68,7 +68,7 @@ tmp_dir <- normalizePath(file.path(getwd(), "..", "..", "tmp", data_name)) # Non
 results_dir <- normalizePath(file.path(getwd(), "..", "..", "results", data_name)) # Rmd output.
 
 # Create directories that don't exist.
-# Note that the document will not Knit to this point if `results_dir` is not created.
+# Note that the document will not knit to this point if `results_dir` is not created.
 # However, "run all" within RStudio will still work.
 # -----------------------------------------------------------------------------------
 if (!dir.exists(assets_dir)) {
